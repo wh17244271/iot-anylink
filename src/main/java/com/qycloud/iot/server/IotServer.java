@@ -17,14 +17,14 @@ public class IotServer implements PrepareDataService {
     @Override
     public List<RealDataDO> prepareRealData() {
 
-        List<RealDataDO> sensorRealDataList = AnyLinkServer.getSensorRealDataList();
+        List<RealDataDO> sensorRealDataList = AnyLinkServer.getSensorRealDataListByDevices();
         return sensorRealDataList;
     }
 
     @Override
     public List<SensorDTO> prepareSensor() {
 
-        List<SensorDTO> sensorInfoList = AnyLinkServer.getSensorInfoList();
+        List<SensorDTO> sensorInfoList = AnyLinkServer.getSensorInfoListByDevices();
         return sensorInfoList;
     }
 }

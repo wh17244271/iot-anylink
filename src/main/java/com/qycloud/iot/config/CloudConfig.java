@@ -34,6 +34,9 @@ public class CloudConfig {
     @Value("${yunyun.config.serialNumber}")
     private  String serialNumber;
 
+    @Value("${yunyun.config.agentId}")
+    private  String agentId;
+
     @Value("${yunyun.config.deviceIds}")
     private  String[] deviceIds;
 

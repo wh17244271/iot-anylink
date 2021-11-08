@@ -84,7 +84,7 @@ public class AnyLinkServer {
 
     public static void main(String[] args) {
         try {
-            List<RealDataDO> sensorRealDataList = getSensorRealDataList();
+            List<RealDataDO> sensorRealDataList = getSensorRealDataListByDevices();
 //            getSensorList();
 //            List<DeviceData> deviceList = getDeviceList();
             System.out.println(sensorRealDataList);
@@ -117,13 +117,17 @@ public class AnyLinkServer {
     }
 
 
-    public static  List<RealDataDO> getSensorRealDataList(){
-
-        // 1444563972
+    public static  List<RealDataDO> getSensorRealDataListByDevices(){
 
         List<RealDataDO> results  = new ArrayList<>();
         RealDataDO result = null;
-        for (String deviceId : cloudConfig.getDeviceIds()){
+
+        List<DeviceData> deviceList = getDeviceList();
+
+        if (null == deviceList || deviceList.isEmpty()) return results;
+
+        for (DeviceData data : deviceList){
+            String deviceId = data.getDeviceId();
             List<SensorRawData> sensorList = getSensorList(deviceId);
 
             if (null == sensorList || sensorList.isEmpty()) continue;
@@ -138,7 +142,7 @@ public class AnyLinkServer {
                 }
 
                 result = new RealDataDO();
-                result.setCode(cloudConfig.getTenantEname()+"_"+rawData.getDevid()+"_"+rawData.getItemid());
+                result.setCode(cloudConfig.getTenantEname()+"_"+data.getSerialNumber()+"_"+rawData.getDevid()+"_"+rawData.getItemid());
                 result.setType(type);
                 result.setRawData(rawData.getVal());
                 result.setValue(rawData.getVal());
@@ -150,24 +154,34 @@ public class AnyLinkServer {
         }
 
 
+
         return results;
 
     }
 
 
-    public static  List<SensorDTO> getSensorInfoList(){
+    public static  List<SensorDTO> getSensorInfoListByDevices(){
         // 1444563972
 
         List<SensorDTO> results  = new ArrayList<>();
         SensorDTO result = null;
-        for (String deviceId : cloudConfig.getDeviceIds()){
+
+
+
+        List<DeviceData> deviceList = getDeviceList();
+
+        if (null == deviceList || deviceList.isEmpty()) return results;
+
+
+        for (DeviceData data :deviceList){
+            String deviceId = data.getDeviceId();
             List<SensorRawData> sensorList = getSensorList(deviceId);
 
             if (null == sensorList || sensorList.isEmpty()) continue;
 
             for (SensorRawData rawData : sensorList){
                 result = new SensorDTO();
-                result.setCode(cloudConfig.getTenantEname()+"_"+rawData.getDevid()+"_"+rawData.getItemid());
+                result.setCode(cloudConfig.getTenantEname()+"_"+data.getSerialNumber()+"_"+rawData.getDevid()+"_"+rawData.getItemid());
                 result.setName(rawData.getItemname());
                 result.setType("cloud");
                 result.setUnit("");
@@ -180,6 +194,8 @@ public class AnyLinkServer {
         return results;
 
     }
+
+
 
 
 
@@ -232,7 +248,7 @@ public class AnyLinkServer {
             params.put("token", token);
             params.put("page", "1");
             params.put("perPage", "1000");
-//            params.put("agentId", "1410707");
+            params.put("agentId", cloudConfig.getAgentId());
 //            params.put("condition", "1");
 
             String forObject = RestTemplateUtils.getForObject(cloudConfig.getAgentListUrl(), params);

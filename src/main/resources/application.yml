@@ -1,8 +1,8 @@
 qpaas:
   gateway:
-    id: apiceshiqiye20211101172044
-    password: 736b9155c354468ba30ae50da0ab2cc3
-    username: apiceshiqiye20211101172044
+    id: apiceshiqiye20211029134847
+    password: 868fe7425dcb4c88a2cdaee5a52b9d69
+    username: apiceshiqiye20211029134847
   mqtt:
     url: tcp://10.0.15.247:1883
 
@@ -18,6 +18,7 @@ yunyun:
     password: 13851778645
     serialNumber: jingshen
     deviceIds: 1444563972,1444563969
+    agentId: 1410707
 
 
 
@@ -26,15 +27,15 @@ yunyun:
 logging:
   file:
     max-history: 1
-    max-size: 100MB
+    max-size: 10MB
     name: ./log/iot.log
-    total-size-cap: 10GB
+    total-size-cap: 1GB
   level:
     com:
       qpaas:
-        service: debug
+        service: info
       qycloud:
-        iot: debug
+        iot: info
     root: info
   pattern:
     file: '{"time":"%date{yyyy-MM-dd HH:mm:ss.SSS}","level":"%level","code":"%logger{40}\(%file:%line\)","product_line":"iot","sid":"%date{ddHHmmssSSS}.${PID}.%t","msg":"%msg","context":"%throwable"}%n'
