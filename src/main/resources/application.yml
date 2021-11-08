@@ -1,0 +1,40 @@
+qpaas:
+  gateway:
+    id: apiceshiqiye20211101172044
+    password: 736b9155c354468ba30ae50da0ab2cc3
+    username: apiceshiqiye20211101172044
+  mqtt:
+    url: tcp://10.0.15.247:1883
+
+yunyun:
+  url:
+    ip: http://cloud.anylink.io:8600
+    token_url: ${yunyun.url.ip}/user/getToken
+    agentList_url: ${yunyun.url.ip}/agentList/pagination
+    currentdata_url: ${yunyun.url.ip}/currentdata/pagination
+  config:
+    tenantEname: jingshen
+    username: anyuan
+    password: 13851778645
+    serialNumber: jingshen
+    deviceIds: 1444563972,1444563969
+
+
+
+
+
+logging:
+  file:
+    max-history: 1
+    max-size: 100MB
+    name: ./log/iot.log
+    total-size-cap: 10GB
+  level:
+    com:
+      qpaas:
+        service: debug
+      qycloud:
+        iot: debug
+    root: info
+  pattern:
+    file: '{"time":"%date{yyyy-MM-dd HH:mm:ss.SSS}","level":"%level","code":"%logger{40}\(%file:%line\)","product_line":"iot","sid":"%date{ddHHmmssSSS}.${PID}.%t","msg":"%msg","context":"%throwable"}%n'
