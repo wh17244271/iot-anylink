@@ -1,0 +1,16 @@
+qpaas:
+  gateway:
+    id: jiangsusuyanjingshe120211207094130
+    password: e9fdf9953b8241d68ecd4d9278b14bcd
+    username: jiangsusuyanjingshe120211207094130
+  mqtt:
+    url: tcp://iot.qpaas.com:1883
+
+yunyun:
+  config:
+    agentId: 1410210 #第二公司
+    deviceIds: 1444055041  #二公司站
+    deviceIdsFilter: true
+    sensorFilter: true
+    filePath: /home/anyuan/filterTxt/sensors.txt  #文本内容必须以 ~ 隔开
+#    filePath: D:\wh\共享盘\文件\sensor.txt  #文本内容必须以 ~ 隔开

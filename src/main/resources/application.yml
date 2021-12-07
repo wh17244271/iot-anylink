@@ -1,8 +1,14 @@
+spring:
+  profiles:
+    active: chengdongzhan
+#    active: ergongsizhan
+#    active: zhangxingzhan
+
 qpaas:
   gateway:
-    id: jiangsusuyanjingshe220211206162844
-    password: fef371b378454b548ec05921971ae75c
-    username: jiangsusuyanjingshe220211206162844
+    id: jiangsusuyanjingshe220211206163052
+    password: 3251183ced7a491f88acdfa1a8389aae
+    username: jiangsusuyanjingshe220211206163052
   mqtt:
     url: tcp://iot.qpaas.com:1883
 
@@ -17,8 +23,12 @@ yunyun:
     username: anyuan
     password: 13851778645
     serialNumber: jingshen
-    deviceIds: 1444563972,1444563969
-    agentId: 1410707
+    deviceIds: 1444563972,1444563969  #设备id
+    agentId: 1410707  #网关id
+    deviceIdsFilter: false  #是否只采集指定的设备id
+    sensorFilter: false  #是否只采集指定的点位名称
+    filePath: /     #点位名称所在文件夹，点位名称格式必须以  ~隔开，例子见 sensor.txt
+
 
 
 
@@ -39,3 +49,4 @@ logging:
     root: info
   pattern:
     file: '{"time":"%date{yyyy-MM-dd HH:mm:ss.SSS}","level":"%level","code":"%logger{40}\(%file:%line\)","product_line":"iot","sid":"%date{ddHHmmssSSS}.${PID}.%t","msg":"%msg","context":"%throwable"}%n'
+

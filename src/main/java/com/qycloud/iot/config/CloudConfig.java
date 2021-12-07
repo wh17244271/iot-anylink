@@ -40,4 +40,15 @@ public class CloudConfig {
     @Value("${yunyun.config.deviceIds}")
     private  String[] deviceIds;
 
+    @Value("${yunyun.config.deviceIdsFilter}")
+    private  boolean deviceIdsFilter = false;
+
+    @Value("${yunyun.config.sensorFilter}")
+    private  boolean sensorFilter = false;
+
+    @Value("${yunyun.config.filePath}")
+    private  String filePath ;
+
+
+
 }

@@ -1,0 +1,14 @@
+qpaas:
+  gateway:
+    id: jiangsusuyanjingshen20211207104023
+    password: b3bfa022e63449c08ad170ef6a4d45f6
+    username: jiangsusuyanjingshen20211207104023
+  mqtt:
+    url: tcp://iot.qpaas.com:1883
+
+yunyun:
+  config:
+    deviceIds: 1444563969   # 1444563969：张兴站
+    agentId: 1410707   #第一公司
+    deviceIdsFilter: true
+    sensorFilter: false

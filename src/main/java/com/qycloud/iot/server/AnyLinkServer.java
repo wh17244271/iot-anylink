@@ -11,6 +11,7 @@ import com.qycloud.iot.domain.DeviceData;
 import com.qycloud.iot.domain.SensorRawData;
 import com.qycloud.iot.utils.RestTemplateUtils;
 import com.qycloud.iot.utils.StaticInterfaceUtils;
+import com.qycloud.iot.utils.TxtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -94,27 +95,6 @@ public class AnyLinkServer {
     }
 
 
-    public static  List<DeviceData> getDeviceList(){
-        String jsonStr = curlDeviceUrl();
-        JSONObject json =(JSONObject) JSONObject.parse(jsonStr);
-        JSONObject result =(JSONObject)  json.get("result");
-
-        JSONArray datas = (JSONArray)result.get("data");
-        Iterator<Object> iterator = datas.stream().iterator();
-        List<DeviceData> all = new ArrayList<>();
-        while (iterator.hasNext()){
-            JSONObject wangguan = (JSONObject)iterator.next();
-            String data = JSONArray.toJSONString(wangguan.get("deviceList"));
-
-            List<DeviceData> sensorRawData1 = JSONArray.parseArray( data, DeviceData.class);
-            all.addAll(sensorRawData1);
-
-        }
-
-
-        return all;
-//
-    }
 
 
     public static  List<RealDataDO> getSensorRealDataListByDevices(){
@@ -197,8 +177,45 @@ public class AnyLinkServer {
 
 
 
+    /**
+     * 获取设备列表
+     * @param
+     * @Author: WangHao
+     */
+    public static  List<DeviceData> getDeviceList(){
+        String jsonStr = curlDeviceUrl();
+        JSONObject json =(JSONObject) JSONObject.parse(jsonStr);
+        JSONObject result =(JSONObject)  json.get("result");
+
+        JSONArray datas = (JSONArray)result.get("data");
+        Iterator<Object> iterator = datas.stream().iterator();
+        List<DeviceData> all = new ArrayList<>();
+        while (iterator.hasNext()){
+            JSONObject wangguan = (JSONObject)iterator.next();
+            String data = JSONArray.toJSONString(wangguan.get("deviceList"));
+
+            List<DeviceData> sensorRawData1 = JSONArray.parseArray( data, DeviceData.class);
+            all.addAll(sensorRawData1);
+
+        }
+
+        boolean filter = cloudConfig.isDeviceIdsFilter();
+        if (filter){
+            List<String> strings = Arrays.asList(cloudConfig.getDeviceIds());
+            all.removeIf(a->!strings.contains(a.getDeviceId()));
+        }
 
 
+        return all;
+//
+    }
+
+
+    /**
+     * 通过设备 id 获取点位列表
+     * @param deviceId
+     * @Author: WangHao
+     */
     public  static  List<SensorRawData> getSensorList(String deviceId){
 
         try {
@@ -222,6 +239,30 @@ public class AnyLinkServer {
 
 
             List<SensorRawData> sensorRawData1 = JSONArray.parseArray( data, SensorRawData.class);
+
+
+            if(cloudConfig.isSensorFilter()){
+                if (null == sensorRawData1 || sensorRawData1.isEmpty()) return sensorRawData1;
+
+                String content = TxtUtils.readTxt(cloudConfig.getFilePath());
+
+                if (null == content || content.isEmpty()) return sensorRawData1;
+
+                String[] split = content.split("~");
+                List<String> sensorNameList = Arrays.asList(split);
+
+                List<SensorRawData> filterList = new ArrayList<>();
+                for (SensorRawData sensorRawData : sensorRawData1) {
+                    String itemname = sensorRawData.getItemname();
+
+                    if (sensorNameList.contains(itemname)){
+                        filterList.add(sensorRawData);
+                    }
+                }
+                return filterList;
+            }
+
+
             return sensorRawData1;
 
         }catch (Exception e){
